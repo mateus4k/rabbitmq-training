@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/streadway/amqp"
+	"github.com/joho/godotenv"
 	"log"
 )
 
@@ -12,7 +13,11 @@ func failOnError(err error, msg string) {
 }
 
 func main() {
-	conn, err := amqp.Dial("amqps://mtwkigor:jVec0pONKV9rOV9LxwibiS7LHSzf59bC@fox.rmq.cloudamqp.com/mtwkigor")
+	err := godotenv.Load()
+	failOnError(err, "Error loading .env file")
+	rabbitMQUrl := os.Getenv("RABBITMQ_URL")
+
+	conn, err := amqp.Dial(RABBITMQ_URL)
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
