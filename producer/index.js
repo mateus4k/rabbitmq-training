@@ -1,5 +1,6 @@
 const amqp = require('amqp-connection-manager');
 require('dotenv').config();
+
 (async () => {
   try {
     const { RABBITMQ_URL } = process.env;
@@ -13,9 +14,13 @@ require('dotenv').config();
       },
     });
 
-    await channel.sendToQueue(queueName, {
-      hello: 'world',
-    });
+    setInterval(async () => {
+        await channel.sendToQueue(queueName, {
+            hello: 'world',
+          });
+
+          console.log('Message sent');
+    }, 1000);
   } catch (error) {
     console.error(error);
   }
